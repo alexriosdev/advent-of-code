@@ -11,6 +11,7 @@ func main() {
 	lines, _ := utils.ReadLines("input.txt")
 	fmt.Println("2023 Day 02 Solution")
 	fmt.Printf("Part 1: %v\n", part1(lines))
+	fmt.Printf("Part 2: %v\n", part2(lines))
 }
 
 func part1(lines []string) int {
@@ -42,6 +43,37 @@ func part1(lines []string) int {
 		if isValid {
 			result += i + 1
 		}
+	}
+	return result
+}
+
+func part2(lines []string) int {
+	cubeMap := map[string]int{
+		"red":   0,
+		"green": 0,
+		"blue":  0,
+	}
+	result := 0
+	for _, line := range lines {
+		newLine := strings.Split(line, ":")[1]
+		gameSets := strings.Split(newLine, ";")
+		for _, gameSet := range gameSets {
+			cubeSets := strings.Split(gameSet, ",")
+			for _, cubeSet := range cubeSets {
+				split := strings.Split(strings.TrimSpace(cubeSet), " ")
+				amount, _ := strconv.Atoi(split[0])
+				color := split[1]
+				if amount > cubeMap[color] {
+					cubeMap[color] = amount
+				}
+			}
+		}
+		power := 1
+		for k, v := range cubeMap {
+			power *= v
+			cubeMap[k] = 0
+		}
+		result += power
 	}
 	return result
 }
