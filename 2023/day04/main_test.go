@@ -22,3 +22,20 @@ func TestPart1(t *testing.T) {
 		}
 	}
 }
+func TestPart2(t *testing.T) {
+	lines1, _ := utils.ReadLines("input_test.txt")
+	lines2, _ := utils.ReadLines("input.txt")
+	tests := []struct {
+		input    []string
+		expected int
+	}{
+		{lines1, 30},
+		{lines2, 9721255},
+	}
+	for _, test := range tests {
+		result := part2(test.input)
+		if result != test.expected {
+			t.Errorf("Result %v not equal to expected %v", result, test.expected)
+		}
+	}
+}
