@@ -34,7 +34,7 @@ func part1(lines []string) int {
 				split := strings.Split(strings.TrimSpace(cubeSet), " ")
 				amount, _ := strconv.Atoi(split[0])
 				color := split[1]
-				if amount > cubeMap[color] && cubeMap[color] != 0 {
+				if amount > cubeMap[color] {
 					isValid = false
 					break
 				}
