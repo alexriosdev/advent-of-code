@@ -1,19 +1,19 @@
 package main
 
 import (
-	"advent-of-code/utils"
+	"os"
 	"testing"
 )
 
 func TestPart1(t *testing.T) {
-	lines1, _ := utils.ReadLines("input_test.txt")
-	lines2, _ := utils.ReadLines("input.txt")
+	input1, _ := os.ReadFile("input_test.txt")
+	input2, _ := os.ReadFile("input.txt")
 	tests := []struct {
-		input    []string
+		input    []byte
 		expected int
 	}{
-		{lines1, 35},
-		{lines2, 165788812},
+		{input1, 35},
+		{input2, 165788812},
 	}
 	for _, test := range tests {
 		result := part1(test.input)
@@ -24,8 +24,8 @@ func TestPart1(t *testing.T) {
 }
 
 func BenchmarkPart1(b *testing.B) {
-	lines, _ := utils.ReadLines("input.txt")
+	input, _ := os.ReadFile("input.txt")
 	for n := 0; n < b.N; n++ {
-		part1(lines)
+		part1(input)
 	}
 }

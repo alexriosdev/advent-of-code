@@ -1,66 +1,41 @@
 package main
 
 import (
-	"advent-of-code/utils"
 	"fmt"
 	"math"
+	"os"
 	"strconv"
 	"strings"
 )
 
 func main() {
-	lines, _ := utils.ReadLines("input.txt")
+	input, _ := os.ReadFile("input.txt")
 	fmt.Println("2023 Day 05 Solution")
-	fmt.Printf("Part 1: %v\n", part1(lines))
+	fmt.Printf("Part 1: %v\n", part1(input))
 }
 
-func part1(lines []string) int {
+func part1(input []byte) int {
+	split := strings.Split(string(input), "\n\n")
 	seeds := []int{}
-	for _, s := range strings.Fields(strings.Split(lines[0], ":")[1]) {
-		seed, _ := strconv.Atoi(s)
-		seeds = append(seeds, seed)
+	for _, s := range strings.Fields(strings.Split(split[0], ":")[1]) {
+		seeds = append(seeds, strToInt(s))
 	}
 
-	indexes := make([]index, 7)
-	for i, line := range lines {
-		switch {
-		case line == "seed-to-soil map:":
-			indexes[0].start = i + 1
-		case line == "soil-to-fertilizer map:":
-			indexes[1].start = i + 1
-		case line == "fertilizer-to-water map:":
-			indexes[2].start = i + 1
-		case line == "water-to-light map:":
-			indexes[3].start = i + 1
-		case line == "light-to-temperature map:":
-			indexes[4].start = i + 1
-		case line == "temperature-to-humidity map:":
-			indexes[5].start = i + 1
-		case line == "humidity-to-location map:":
-			indexes[6].start = i + 1
-		}
-	}
-
-	for i := 0; i < len(indexes)-1; i++ {
-		indexes[i].end = indexes[i+1].start - 1
-	}
-	indexes[6].end = len(lines)
-
-	conversionMaps := make([][]rangeMap, 7)
-	for i, index := range indexes {
+	conversionMaps := [][]rangeMap{}
+	for i := 1; i < len(split); i++ {
 		conversionMap := []rangeMap{}
-		for j := index.start; j < index.end; j++ {
-			numbers := strings.Fields(lines[j])
-			dest, _ := strconv.Atoi(numbers[0])
-			source, _ := strconv.Atoi(numbers[1])
-			len, _ := strconv.Atoi(numbers[2])
+		for _, s := range strings.Split(strings.Split(split[i], ":\n")[1], "\n") {
+			numbers := strings.Fields(s)
+			if len(numbers) == 0 {
+				continue
+			}
 			conversionMap = append(conversionMap, rangeMap{
-				dest:   dest,
-				source: source,
-				len:    len,
+				dest:   strToInt(numbers[0]),
+				source: strToInt(numbers[1]),
+				len:    strToInt(numbers[2]),
 			})
 		}
-		conversionMaps[i] = conversionMap
+		conversionMaps = append(conversionMaps, conversionMap)
 	}
 
 	for i := range seeds {
@@ -85,13 +60,14 @@ type rangeMap struct {
 	dest, source, len int
 }
 
-type index struct {
-	start, end int
-}
-
 func getMin(a, b int) int {
 	if a < b {
 		return a
 	}
 	return b
+}
+
+func strToInt(s string) int {
+	num, _ := strconv.Atoi(s)
+	return num
 }
