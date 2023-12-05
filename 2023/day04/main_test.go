@@ -39,3 +39,17 @@ func TestPart2(t *testing.T) {
 		}
 	}
 }
+
+func BenchmarkPart1(b *testing.B) {
+	lines, _ := utils.ReadLines("input.txt")
+	for n := 0; n < b.N; n++ {
+		part1(lines)
+	}
+}
+
+func BenchmarkPart2(b *testing.B) {
+	lines, _ := utils.ReadLines("input.txt")
+	for n := 0; n < b.N; n++ {
+		part2(lines)
+	}
+}

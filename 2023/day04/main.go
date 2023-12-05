@@ -18,13 +18,13 @@ func part1(lines []string) int {
 	result := 0
 	for _, line := range lines {
 		line = strings.Split(line, ":")[1]
-		cards := strings.Split(line, "|")
+		numbers := strings.Split(line, "|")
 		winningSet := map[string]bool{}
-		for _, num := range getNumbers(cards[0]) {
+		for _, num := range strings.Fields(numbers[0]) {
 			winningSet[num] = true
 		}
 		count := 0
-		for _, num := range getNumbers(cards[1]) {
+		for _, num := range strings.Fields(numbers[1]) {
 			if winningSet[num] {
 				count++
 			}
@@ -37,38 +37,26 @@ func part1(lines []string) int {
 }
 
 func part2(lines []string) int {
-	cardFreq := make([]int, len(lines))
-	for i := range cardFreq {
-		cardFreq[i] = 1
-	}
+	result := 0
+	cards := make([]int, len(lines))
 	for i, line := range lines {
 		line = strings.Split(line, ":")[1]
-		cards := strings.Split(line, "|")
+		numbers := strings.Split(line, "|")
 		winningSet := map[string]bool{}
-		for _, num := range getNumbers(cards[0]) {
+		for _, num := range strings.Fields(numbers[0]) {
 			winningSet[num] = true
 		}
+		cards[i]++
 		count := 0
-		for _, num := range getNumbers(cards[1]) {
+		for _, num := range strings.Fields(numbers[1]) {
 			if winningSet[num] {
 				count++
-				cardFreq[i+count] += cardFreq[i]
+				cards[i+count] += cards[i]
 			}
 		}
-	}
-	result := 0
-	for _, val := range cardFreq {
-		result += val
+		result += cards[i]
 	}
 	return result
-}
-
-func getNumbers(cards string) []string {
-	nums := []string{}
-	for _, num := range strings.Fields(cards) {
-		nums = append(nums, num)
-	}
-	return nums
 }
 
 func powInt(base, exp int) int {
