@@ -31,7 +31,7 @@ func part1(lines []string) int {
 			}
 			cubeSets := strings.Split(gameSet, ",")
 			for _, cubeSet := range cubeSets {
-				split := strings.Split(strings.TrimSpace(cubeSet), " ")
+				split := strings.Fields(cubeSet)
 				amount, _ := strconv.Atoi(split[0])
 				color := split[1]
 				if amount > cubeMap[color] {
@@ -60,7 +60,7 @@ func part2(lines []string) int {
 		for _, gameSet := range gameSets {
 			cubeSets := strings.Split(gameSet, ",")
 			for _, cubeSet := range cubeSets {
-				split := strings.Split(strings.TrimSpace(cubeSet), " ")
+				split := strings.Fields(cubeSet)
 				amount, _ := strconv.Atoi(split[0])
 				color := split[1]
 				if amount > cubeMap[color] {
