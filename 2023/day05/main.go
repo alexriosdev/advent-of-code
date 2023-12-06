@@ -16,7 +16,7 @@ func main() {
 }
 
 func part1(input []byte) int {
-	split := strings.Split(string(input), "\n\n")
+	split := strings.Split(strings.TrimSpace(string(input)), "\n\n")
 	seeds := []int{}
 	for _, s := range strings.Fields(strings.Split(split[0], ":")[1]) {
 		seeds = append(seeds, strToInt(s))
@@ -27,9 +27,6 @@ func part1(input []byte) int {
 		conversionMap := []rangeMap{}
 		for _, s := range strings.Split(strings.Split(split[i], ":\n")[1], "\n") {
 			numbers := strings.Fields(s)
-			if len(numbers) == 0 {
-				continue
-			}
 			conversionMap = append(conversionMap, rangeMap{
 				dest:   strToInt(numbers[0]),
 				source: strToInt(numbers[1]),
@@ -39,20 +36,9 @@ func part1(input []byte) int {
 		conversionMaps = append(conversionMaps, conversionMap)
 	}
 
-	for i := range seeds {
-		for _, conversionMap := range conversionMaps {
-			for _, r := range conversionMap {
-				if r.source <= seeds[i] && seeds[i] < r.source+r.len {
-					seeds[i] = r.dest + (seeds[i] - r.source)
-					break
-				}
-			}
-		}
-	}
-
 	result := math.MaxInt
 	for _, seed := range seeds {
-		result = getMin(result, seed)
+		result = getMin(result, convertSeed(seed, conversionMaps))
 	}
 	return result
 }
