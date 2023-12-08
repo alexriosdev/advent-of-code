@@ -13,15 +13,18 @@ type play struct {
 	handType, bid int
 }
 
-const (
-	fiveOfAKind  = 7
-	fourOfAKind  = 6
-	fullHouse    = 5
-	threeOfAKind = 4
-	twoPair      = 3
-	onePair      = 2
-	highCard     = 1
-)
+type handType struct {
+	value int
+	shape []int
+}
+
+var fiveOfAKind  = handType{value: 7, shape: []int{5}}
+var fourOfAKind  = handType{value: 6, shape: []int{1, 4}}
+var fullHouse    = handType{value: 5, shape: []int{2, 3}}
+var threeOfAKind = handType{value: 4, shape: []int{1, 1, 3}}
+var twoPair      = handType{value: 3, shape: []int{1, 2, 2}}
+var onePair      = handType{value: 2, shape: []int{1, 1, 1, 2}}
+var highCard     = handType{value: 1, shape: []int{1, 1, 1, 1, 1}}
 
 func main() {
 	lines, _ := utils.ReadLines("input.txt")
@@ -44,22 +47,28 @@ func part1(lines []string) int {
 		for _, c := range play.hand {
 			freq[c]++
 		}
-		n := len(freq)
+		counts := []int{}
+		for _, v := range freq {
+			counts = append(counts, v)
+		}
+		sort.Slice(counts, func(i, j int) bool {
+			return counts[i] < counts[j]
+		})
 		switch {
-		case n == 1:
-			plays[i].handType = fiveOfAKind
-		case n == 2 && containsValue(freq, 4):
-			plays[i].handType = fourOfAKind
-		case n == 2:
-			plays[i].handType = fullHouse
-		case n == 3 && containsValue(freq, 3):
-			plays[i].handType = threeOfAKind
-		case n == 3:
-			plays[i].handType = twoPair
-		case n == 4:
-			plays[i].handType = onePair
+		case sliceEqual(counts, fiveOfAKind.shape):
+			plays[i].handType = fiveOfAKind.value
+		case sliceEqual(counts, fourOfAKind.shape):
+			plays[i].handType = fourOfAKind.value
+		case sliceEqual(counts, fullHouse.shape):
+			plays[i].handType = fullHouse.value
+		case sliceEqual(counts, threeOfAKind.shape):
+			plays[i].handType = threeOfAKind.value
+		case sliceEqual(counts, twoPair.shape):
+			plays[i].handType = twoPair.value
+		case sliceEqual(counts, onePair.shape):
+			plays[i].handType = onePair.value
 		default:
-			plays[i].handType = highCard
+			plays[i].handType = highCard.value
 		}
 	}
 
@@ -102,16 +111,19 @@ func comparePlays(playA, playB play, cardMap map[rune]int) bool {
 	return false
 }
 
-func containsValue(freq map[rune]int, val int) bool {
-	for _, v := range freq {
-		if v == val {
-			return true
-		}
-	}
-	return false
-}
-
 func strToInt(s string) int {
 	num, _ := strconv.Atoi(s)
 	return num
+}
+
+func sliceEqual(a, b []int) bool {
+	if len(a) != len(b) {
+		return false
+	}
+	for i, v := range a {
+		if v != b[i] {
+			return false
+		}
+	}
+	return true
 }
