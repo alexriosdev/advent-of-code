@@ -8,6 +8,21 @@ import (
 	"strings"
 )
 
+type play struct {
+	hand          string
+	handType, bid int
+}
+
+const (
+	fiveOfAKind  = 7
+	fourOfAKind  = 6
+	fullHouse    = 5
+	threeOfAKind = 4
+	twoPair      = 3
+	onePair      = 2
+	highCard     = 1
+)
+
 func main() {
 	lines, _ := utils.ReadLines("input.txt")
 	fmt.Println("2023 Day 07 Solution")
@@ -33,11 +48,11 @@ func part1(lines []string) int {
 		switch {
 		case n == 1:
 			plays[i].handType = fiveOfAKind
-		case n == 2 && checkValue(freq, 4):
+		case n == 2 && containsValue(freq, 4):
 			plays[i].handType = fourOfAKind
 		case n == 2:
 			plays[i].handType = fullHouse
-		case n == 3 && checkValue(freq, 3):
+		case n == 3 && containsValue(freq, 3):
 			plays[i].handType = threeOfAKind
 		case n == 3:
 			plays[i].handType = twoPair
@@ -48,8 +63,23 @@ func part1(lines []string) int {
 		}
 	}
 
+	cardMap := map[rune]int{
+		'A': 12,
+		'K': 11,
+		'Q': 10,
+		'J': 9,
+		'T': 8,
+		'9': 7,
+		'8': 6,
+		'7': 5,
+		'6': 4,
+		'5': 3,
+		'4': 2,
+		'3': 1,
+		'2': 0,
+	}
 	sort.Slice(plays, func(a, b int) bool {
-		return comparePlays(plays[a], plays[b])
+		return comparePlays(plays[a], plays[b], cardMap)
 	})
 
 	result := 0
@@ -59,36 +89,7 @@ func part1(lines []string) int {
 	return result
 }
 
-var cardMap = map[rune]int{
-	'A': 13,
-	'K': 12,
-	'Q': 11,
-	'J': 10,
-	'T': 9,
-	'9': 8,
-	'8': 7,
-	'7': 6,
-	'6': 5,
-	'5': 4,
-	'4': 3,
-	'3': 2,
-	'2': 1,
-}
-
-var fiveOfAKind = 7
-var fourOfAKind = 6
-var fullHouse = 5
-var threeOfAKind = 4
-var twoPair = 3
-var onePair = 2
-var highCard = 1
-
-type play struct {
-	hand          string
-	handType, bid int
-}
-
-func comparePlays(playA, playB play) bool {
+func comparePlays(playA, playB play, cardMap map[rune]int) bool {
 	if playA.handType != playB.handType {
 		return playA.handType < playB.handType
 	}
@@ -101,7 +102,7 @@ func comparePlays(playA, playB play) bool {
 	return false
 }
 
-func checkValue(freq map[rune]int, val int) bool {
+func containsValue(freq map[rune]int, val int) bool {
 	for _, v := range freq {
 		if v == val {
 			return true
