@@ -22,6 +22,7 @@ func main() {
 	lines, _ := utils.ReadLines("input.txt")
 	fmt.Println("2023 Day 10 Solution")
 	fmt.Printf("Part 1: %v\n", part1(lines))
+	fmt.Printf("Part 2: %v\n", part1(lines))
 }
 
 func part1(lines []string) int {
@@ -42,6 +43,43 @@ func part1(lines []string) int {
 	}
 	loop := findLoop(graph, start)
 	return len(loop) / 2
+}
+
+func part2(lines []string) int {
+	grid := linesToGrid(lines)
+	start := coordinate{}
+	graph := tileMap{}
+	for i, row := range grid {
+		for j, tile := range row {
+			pos := coordinate{
+				y: i,
+				x: j,
+			}
+			if tile == 'S' {
+				start = pos
+			}
+			graph[pos] = getTileValue(tile)
+		}
+	}
+	loop := findLoop(graph, start)
+	result := 0
+	for i, row := range grid {
+		isInside := false
+		for j := range row {
+			pos := coordinate{
+				y: i,
+				x: j,
+			}
+			if !loop[pos] {
+				if isInside {
+					result++
+				}
+			} else if graph[pos][0] {
+				isInside = !isInside
+			}
+		}
+	}
+	return result
 }
 
 func getTileValue(tile rune) [4]bool {
