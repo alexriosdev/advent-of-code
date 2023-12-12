@@ -19,6 +19,7 @@ func main() {
 	lines, _ := utils.ReadLines("input.txt")
 	fmt.Println("2023 Day 11 Solution")
 	fmt.Printf("Part 1: %v\n", part1(lines))
+	fmt.Printf("Part 2: %v\n", part2(lines, 1000000))
 }
 
 func part1(lines []string) int {
@@ -26,6 +27,18 @@ func part1(lines []string) int {
 	galaxies := getGalaxies(grid)
 	emptyRows := getEmptyRows(grid)
 	emptyCols := getEmptyCols(grid)
+	return getDistanceSum(2, galaxies, emptyRows, emptyCols)
+}
+
+func part2(lines []string, factor int) int {
+	grid := linesToGrid(lines)
+	galaxies := getGalaxies(grid)
+	emptyRows := getEmptyRows(grid)
+	emptyCols := getEmptyCols(grid)
+	return getDistanceSum(factor, galaxies, emptyRows, emptyCols)
+}
+
+func getDistanceSum(factor int, galaxies []coordinate, emptyRows, emptyCols []int) int {
 	sum := 0
 	pairs := map[[2]int]bool{}
 	for i := range galaxies {
@@ -40,13 +53,13 @@ func part1(lines []string) int {
 			rangeRows := makeRange(getMin(a.y, b.y), getMax(a.y, b.y))
 			for _, row := range emptyRows {
 				if slices.Contains(rangeRows, row) {
-					dist += 1
+					dist += factor - 1
 				}
 			}
 			rangeCols := makeRange(getMin(a.x, b.x), getMax(a.x, b.x))
 			for _, col := range emptyCols {
 				if slices.Contains(rangeCols, col) {
-					dist += 1
+					dist += factor - 1
 				}
 			}
 			sum += dist
