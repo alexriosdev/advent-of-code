@@ -42,36 +42,33 @@ func part2(lines []string) int {
 		sb := strings.Builder{}
 		val := 0
 		for _, c := range line {
-			if unicode.IsLetter(c) {
+			switch {
+			case unicode.IsLetter(c):
 				sb.WriteRune(c)
 				val = applyHash(val, c)
-				continue
-			}
-			if c == '-' {
+			case unicode.IsNumber(c):
+				label := sb.String()
+				boxes[val].Put(label, int(c-'0'))
+				val = 0
+				sb.Reset()
+			case c == '-':
 				label := sb.String()
 				boxes[val].Remove(label)
 				sb.Reset()
 				val = 0
-				continue
 			}
-			if c == '=' || c == ',' {
-				continue
-			}
-			label := sb.String()
-			(boxes)[val].Put(label, int(c-'0'))
-			val = 0
-			sb.Reset()
 		}
 	}
 	result := 0
 	for i, box := range boxes {
-		if !box.Empty() {
-			iter := box.Iterator()
-			slot := 1
-			for iter.Next() {
-				result += applyFocusingPower(i, slot, iter.Value().(int))
-				slot++
-			}
+		if box.Empty() {
+			continue
+		}
+		slot := 1
+		iter := box.Iterator()
+		for iter.Next() {
+			result += applyFocusingPower(i, slot, iter.Value().(int))
+			slot++
 		}
 	}
 	return result
