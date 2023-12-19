@@ -53,9 +53,9 @@ func part1(lines []string) int {
 			case '.':
 				queue.Enqueue(continueBeam(curr))
 			case '/':
-				queue.Enqueue(forwardslashMirrorBeam(curr))
+				queue.Enqueue(mirrorBeam(curr, []direction{RIGHT, UP, LEFT, DOWN}))
 			case '\\':
-				queue.Enqueue(backwardslashMirrorBeam(curr))
+				queue.Enqueue(mirrorBeam(curr, []direction{LEFT, DOWN, RIGHT, UP}))
 			case '|':
 				for _, b := range splitBeam(curr, []direction{UP, DOWN}) {
 					queue.Enqueue(b)
@@ -77,30 +77,16 @@ func continueBeam(b beam) beam {
 	}
 }
 
-func forwardslashMirrorBeam(b beam) beam {
+func mirrorBeam(b beam, dirs []direction) beam {
 	switch b.dir {
 	case UP:
-		b.dir = RIGHT
+		b.dir = dirs[0]
 	case RIGHT:
-		b.dir = UP
+		b.dir = dirs[1]
 	case DOWN:
-		b.dir = LEFT
+		b.dir = dirs[2]
 	case LEFT:
-		b.dir = DOWN
-	}
-	return continueBeam(b)
-}
-
-func backwardslashMirrorBeam(b beam) beam {
-	switch b.dir {
-	case UP:
-		b.dir = LEFT
-	case RIGHT:
-		b.dir = DOWN
-	case DOWN:
-		b.dir = RIGHT
-	case LEFT:
-		b.dir = UP
+		b.dir = dirs[3]
 	}
 	return continueBeam(b)
 }
