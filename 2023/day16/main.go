@@ -29,17 +29,34 @@ func main() {
 	lines, _ := utils.ReadLines("input.txt")
 	fmt.Println("2023 Day 16 Solution")
 	fmt.Printf("Part 1: %v\n", part1(lines))
+	fmt.Printf("Part 2: %v\n", part2(lines))
 }
 
 func part1(lines []string) int {
 	grid := linesToGrid(lines)
+	return getEnergizedTiles(&grid, beam{coordinate{0, 0}, RIGHT})
+}
+
+func part2(lines []string) int {
+	grid := linesToGrid(lines)
 	rows, cols := len(grid), len(grid[0])
+	candidates := []int{}
+	for i := 0; i < rows; i++ {
+		candidates = append(candidates, getEnergizedTiles(&grid, beam{coordinate{i, 0}, RIGHT}))
+		candidates = append(candidates, getEnergizedTiles(&grid, beam{coordinate{i, cols - 1}, LEFT}))
+	}
+	for j := 0; j < cols; j++ {
+		candidates = append(candidates, getEnergizedTiles(&grid, beam{coordinate{0, j}, DOWN}))
+		candidates = append(candidates, getEnergizedTiles(&grid, beam{coordinate{rows - 1, j}, UP}))
+	}
+	return slices.Max(candidates)
+}
+
+func getEnergizedTiles(grid *[][]rune, start beam) int {
+	rows, cols := len(*grid), len((*grid)[0])
 	energized, visited := hashset.New(), hashset.New()
 	queue := linkedlistqueue.New()
-	queue.Enqueue(beam{
-		pos: coordinate{0, 0},
-		dir: RIGHT,
-	})
+	queue.Enqueue(start)
 	for !queue.Empty() {
 		val, _ := queue.Dequeue()
 		curr := val.(beam)
@@ -49,7 +66,7 @@ func part1(lines []string) int {
 				continue
 			}
 			visited.Add(curr)
-			switch grid[curr.pos.y][curr.pos.x] {
+			switch (*grid)[curr.pos.y][curr.pos.x] {
 			case '.':
 				queue.Enqueue(continueBeam(curr))
 			case '/':
