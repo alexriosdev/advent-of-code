@@ -9,11 +9,11 @@ import (
 	pqutil "github.com/emirpasic/gods/utils"
 )
 
-var UP 		= coordinate{-1, 0}
-var RIGHT 	= coordinate{0, 1}
-var DOWN 	= coordinate{1, 0}
-var LEFT 	= coordinate{0, -1}
-var ORIGIN 	= coordinate{0, 0}
+var UP = coordinate{-1, 0}
+var RIGHT = coordinate{0, 1}
+var DOWN = coordinate{1, 0}
+var LEFT = coordinate{0, -1}
+var ORIGIN = coordinate{0, 0}
 
 type coordinate struct {
 	y, x int
@@ -39,15 +39,22 @@ func main() {
 	lines, _ := utils.ReadLines("input.txt")
 	fmt.Println("2023 Day 17 Solution")
 	fmt.Printf("Part 1: %v\n", part1(lines))
+	fmt.Printf("Part 2: %v\n", part2(lines))
 }
 
 func part1(lines []string) int {
 	grid := linesToGrid(lines)
 	start, end := ORIGIN, coordinate{len(grid) - 1, len(grid[0]) - 1}
-	return getMinHeatLoss(&grid, start, end, 3)
+	return getMinHeatLoss(&grid, start, end, 1, 3)
 }
 
-func getMinHeatLoss(grid *[][]rune, start, end coordinate, maxDist int) int {
+func part2(lines []string) int {
+	grid := linesToGrid(lines)
+	start, end := ORIGIN, coordinate{len(grid) - 1, len(grid[0]) - 1}
+	return getMinHeatLoss(&grid, start, end, 4, 10)
+}
+
+func getMinHeatLoss(grid *[][]rune, start, end coordinate, minDist, maxDist int) int {
 	visited := hashset.New()
 	pq := priorityqueue.NewWith(byHeatLoss)
 	pq.Enqueue(heatState{state{start, start, 0}, 0})
@@ -55,7 +62,7 @@ func getMinHeatLoss(grid *[][]rune, start, end coordinate, maxDist int) int {
 		val, _ := pq.Dequeue()
 		curr := val.(heatState).state
 		heatLoss := val.(heatState).heatLoss
-		if curr.pos == end {
+		if curr.pos == end && curr.dist >= minDist {
 			return heatLoss
 		}
 		if visited.Contains(curr) {
@@ -66,10 +73,12 @@ func getMinHeatLoss(grid *[][]rune, start, end coordinate, maxDist int) int {
 		if curr.dist < maxDist && curr.dir != ORIGIN && isWithinBounds(start, next, end) {
 			pq.Enqueue(heatState{state{next, curr.dir, curr.dist + 1}, heatLoss + getHeatLoss(grid, next)})
 		}
-		for _, dir := range []coordinate{UP, RIGHT, DOWN, LEFT} {
-			next := coordinate{curr.pos.y + dir.y, curr.pos.x + dir.x}
-			if dir != curr.dir && dir != reverseDir(curr.dir) && isWithinBounds(start, next, end) {
-				pq.Enqueue(heatState{state{next, dir, 1}, heatLoss + getHeatLoss(grid, next)})
+		if (curr.dist >= minDist) || (curr.dir == ORIGIN) {
+			for _, dir := range []coordinate{UP, RIGHT, DOWN, LEFT} {
+				next := coordinate{curr.pos.y + dir.y, curr.pos.x + dir.x}
+				if dir != curr.dir && dir != reverseDir(curr.dir) && isWithinBounds(start, next, end) {
+					pq.Enqueue(heatState{state{next, dir, 1}, heatLoss + getHeatLoss(grid, next)})
+				}
 			}
 		}
 	}
