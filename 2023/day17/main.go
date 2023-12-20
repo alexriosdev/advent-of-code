@@ -9,11 +9,11 @@ import (
 	pqutil "github.com/emirpasic/gods/utils"
 )
 
-var UP = coordinate{-1, 0}
-var RIGHT = coordinate{0, 1}
-var DOWN = coordinate{1, 0}
-var LEFT = coordinate{0, -1}
-var ORIGIN = coordinate{0, 0}
+var UP 		= coordinate{-1, 0}
+var RIGHT 	= coordinate{0, 1}
+var DOWN 	= coordinate{1, 0}
+var LEFT 	= coordinate{0, -1}
+var ORIGIN 	= coordinate{0, 0}
 
 type coordinate struct {
 	y, x int
@@ -30,9 +30,9 @@ type heatState struct {
 }
 
 func byHeatLoss(a, b interface{}) int {
-	priorityA := a.(heatState).heatLoss
-	priorityB := b.(heatState).heatLoss
-	return pqutil.IntComparator(priorityA, priorityB)
+	heatLossA := a.(heatState).heatLoss
+	heatLossB := b.(heatState).heatLoss
+	return pqutil.IntComparator(heatLossA, heatLossB)
 }
 
 func main() {
@@ -62,18 +62,14 @@ func getMinHeatLoss(grid *[][]rune, start, end coordinate, maxDist int) int {
 			continue
 		}
 		visited.Add(curr)
-		if curr.dist < maxDist && curr.dir != ORIGIN {
-			next := coordinate{curr.pos.y + curr.dir.y, curr.pos.x + curr.dir.x}
-			if isWithinBounds(start, next, end) {
-				pq.Enqueue(heatState{state{next, curr.dir, curr.dist + 1}, heatLoss + int((*grid)[next.y][next.x]) - '0'})
-			}
+		next := coordinate{curr.pos.y + curr.dir.y, curr.pos.x + curr.dir.x}
+		if curr.dist < maxDist && curr.dir != ORIGIN && isWithinBounds(start, next, end) {
+			pq.Enqueue(heatState{state{next, curr.dir, curr.dist + 1}, heatLoss + getHeatLoss(grid, next)})
 		}
 		for _, dir := range []coordinate{UP, RIGHT, DOWN, LEFT} {
-			if dir != curr.dir && dir != reverseDir(curr.dir) {
-				next := coordinate{curr.pos.y + dir.y, curr.pos.x + dir.x}
-				if isWithinBounds(start, next, end) {
-					pq.Enqueue(heatState{state{next, dir, 1}, heatLoss + int((*grid)[next.y][next.x]) - '0'})
-				}
+			next := coordinate{curr.pos.y + dir.y, curr.pos.x + dir.x}
+			if dir != curr.dir && dir != reverseDir(curr.dir) && isWithinBounds(start, next, end) {
+				pq.Enqueue(heatState{state{next, dir, 1}, heatLoss + getHeatLoss(grid, next)})
 			}
 		}
 	}
@@ -84,8 +80,12 @@ func isWithinBounds(start, next, end coordinate) bool {
 	return (start.y <= next.y && next.y <= end.y) && (start.x <= next.x && next.x <= end.x)
 }
 
-func reverseDir(c coordinate) coordinate {
-	return coordinate{-c.y, -c.x}
+func getHeatLoss(grid *[][]rune, next coordinate) int {
+	return int((*grid)[next.y][next.x]) - '0'
+}
+
+func reverseDir(dir coordinate) coordinate {
+	return coordinate{-dir.y, -dir.x}
 }
 
 func linesToGrid(lines []string) [][]rune {
