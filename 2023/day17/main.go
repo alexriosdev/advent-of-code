@@ -9,11 +9,11 @@ import (
 	pqutil "github.com/emirpasic/gods/utils"
 )
 
-var UP = coordinate{-1, 0}
-var RIGHT = coordinate{0, 1}
-var DOWN = coordinate{1, 0}
-var LEFT = coordinate{0, -1}
-var ORIGIN = coordinate{0, 0}
+var UP 		= coordinate{-1, 0}
+var RIGHT 	= coordinate{0, 1}
+var DOWN 	= coordinate{1, 0}
+var LEFT 	= coordinate{0, -1}
+var ORIGIN 	= coordinate{0, 0}
 
 type coordinate struct {
 	y, x int
