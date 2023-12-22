@@ -7,11 +7,11 @@ import (
 	"strings"
 )
 
-var UP = coordinate{-1, 0}
-var RIGHT = coordinate{0, 1}
-var DOWN = coordinate{1, 0}
-var LEFT = coordinate{0, -1}
-var ORIGIN = coordinate{0, 0}
+var UP 		= coordinate{-1, 0}
+var RIGHT 	= coordinate{0, 1}
+var DOWN 	= coordinate{1, 0}
+var LEFT 	= coordinate{0, -1}
+var ORIGIN	= coordinate{0, 0}
 
 type coordinate struct {
 	y, x int
@@ -21,6 +21,7 @@ func main() {
 	lines, _ := utils.ReadLines("input.txt")
 	fmt.Println("2023 Day 18 Solution")
 	fmt.Printf("Part 1: %v\n", part1(lines))
+	fmt.Printf("Part 2: %v\n", part2(lines))
 }
 
 func part1(lines []string) int {
@@ -47,6 +48,31 @@ func part1(lines []string) int {
 	return applyPicksTheorem(totalDist, area)
 }
 
+func part2(lines []string) int {
+	points := []coordinate{ORIGIN}
+	totalDist := 0
+	replacer := strings.NewReplacer("(", "", "#", "", ")", "")
+	for _, line := range lines {
+		color := replacer.Replace(strings.Fields(line)[2])
+		dir, dist := color[5], hexToInt(color[:5])
+		point := points[len(points)-1]
+		switch dir {
+		case '0':
+			point = coordinate{point.y + UP.y*dist, point.x + UP.x*dist}
+		case '1':
+			point = coordinate{point.y + RIGHT.y*dist, point.x + RIGHT.x*dist}
+		case '2':
+			point = coordinate{point.y + DOWN.y*dist, point.x + DOWN.x*dist}
+		case '3':
+			point = coordinate{point.y + LEFT.y*dist, point.x + LEFT.x*dist}
+		}
+		points = append(points, point)
+		totalDist += dist
+	}
+	area := applyShoelaceFormula(points)
+	return applyPicksTheorem(totalDist, area)
+}
+
 func applyShoelaceFormula(points []coordinate) int {
 	sum := 0
 	j := len(points) - 1
@@ -59,6 +85,11 @@ func applyShoelaceFormula(points []coordinate) int {
 
 func applyPicksTheorem(totalDist, area int) int {
 	return (totalDist / 2) + area + 1
+}
+
+func hexToInt(s string) int {
+	num, _ := strconv.ParseInt(s, 16, 64)
+	return int(num)
 }
 
 func strToInt(s string) int {
