@@ -77,9 +77,7 @@ func isAccepted(part *map[rune]int, workflows *map[string][]string, rule string)
 				return isAccepted(part, workflows, work)
 			}
 			key, op, num := rune(work[0]), work[1], runesToInt([]rune(work[2:]))
-			if op == '<' && (*part)[key] < num {
-				return isAccepted(part, workflows, split[1])
-			} else if op == '>' && (*part)[key] > num {
+			if (op == '<' && (*part)[key] < num) || (op == '>' && (*part)[key] > num) {
 				return isAccepted(part, workflows, split[1])
 			}
 		}
@@ -103,24 +101,25 @@ func getCombinations(part *map[rune]pair, workflows *map[string][]string, rule s
 				result += getCombinations(part, workflows, work)
 				continue
 			}
-			r, num := (*part)[rune(work[0])], runesToInt([]rune(work[2:]))
-			t, f, newPart := pair{}, pair{}, map[rune]pair{}
-			for k, v := range *part {
-				newPart[k] = v
-			}
-			if work[1] == '<' {
+			key, op, num := rune(work[0]), work[1], runesToInt([]rune(work[2:]))
+			r, t, f := (*part)[key], pair{}, pair{}
+			if op == '<' {
 				t.low, t.high = r.low, num-1
 				f.low, f.high = num, r.high
-			} else if work[1] == '>' {
+			} else if op == '>' {
 				t.low, t.high = num+1, r.high
 				f.low, f.high = r.low, num
 			}
 			if t.low <= t.high {
-				newPart[rune(work[0])] = t
+				newPart := map[rune]pair{}
+				for k, v := range *part {
+					newPart[k] = v
+				}
+				newPart[key] = t
 				result += getCombinations(&newPart, workflows, split[1])
 			}
 			if f.low <= f.high {
-				(*part)[rune(work[0])] = f
+				(*part)[key] = f
 			}
 		}
 		return result
