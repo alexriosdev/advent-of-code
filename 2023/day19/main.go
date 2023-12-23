@@ -73,16 +73,14 @@ func isAccepted(part *map[rune]int, workflows *map[string][]string, rule string)
 	if rule != "R" {
 		for _, work := range (*workflows)[rule] {
 			split := strings.Split(work, ":")
-			if len(split) == 2 && work[1] == '<' {
-				if (*part)[rune(work[0])] < runesToInt([]rune(work[2:])) {
-					return isAccepted(part, workflows, split[1])
-				}
-			} else if len(split) == 2 && work[1] == '>' {
-				if (*part)[rune(work[0])] > runesToInt([]rune(work[2:])) {
-					return isAccepted(part, workflows, split[1])
-				}
-			} else {
+			if len(split) != 2 {
 				return isAccepted(part, workflows, work)
+			}
+			key, op, num := rune(work[0]), work[1], runesToInt([]rune(work[2:]))
+			if op == '<' && (*part)[key] < num {
+				return isAccepted(part, workflows, split[1])
+			} else if op == '>' && (*part)[key] > num {
+				return isAccepted(part, workflows, split[1])
 			}
 		}
 	}
