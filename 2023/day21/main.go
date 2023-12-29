@@ -7,10 +7,10 @@ import (
 	"github.com/emirpasic/gods/queues/linkedlistqueue"
 )
 
-var UP 		= coordinate{-1, 0}
-var RIGHT 	= coordinate{0, 1}
-var DOWN 	= coordinate{1, 0}
-var LEFT 	= coordinate{0, -1}
+var UP = coordinate{-1, 0}
+var RIGHT = coordinate{0, 1}
+var DOWN = coordinate{1, 0}
+var LEFT = coordinate{0, -1}
 
 type coordinate struct {
 	y, x int
@@ -38,6 +38,10 @@ func part1(lines []string, steps int) int {
 			}
 		}
 	}
+	return getGardenPlotCount(grid, start, steps)
+}
+
+func getGardenPlotCount(grid [][]rune, start coordinate, steps int) int {
 	count := 0
 	visited := map[coordinate]bool{}
 	visited[start] = true
@@ -49,12 +53,9 @@ func part1(lines []string, steps int) int {
 		if curr.steps%2 == 0 {
 			count++
 		}
-		if curr.steps == 0 {
-			continue
-		}
 		for _, dir := range []coordinate{UP, RIGHT, DOWN, LEFT} {
 			next := coordinate{curr.pos.y + dir.y, curr.pos.x + dir.x}
-			if (0 <= next.y && next.y < len(grid)) && (0 <= next.x && next.x < len(grid[0])) && grid[next.y][next.x] != '#' && !visited[next] {
+			if (0 <= next.y && next.y < len(grid)) && (0 <= next.x && next.x < len(grid[0])) && grid[next.y][next.x] != '#' && !visited[next] && curr.steps-1 >= 0 {
 				visited[next] = true
 				queue.Enqueue(state{next, curr.steps - 1})
 			}
