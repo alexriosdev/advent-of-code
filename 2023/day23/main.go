@@ -45,21 +45,29 @@ func part1(lines []string) int {
 	walkable := []coordinate{start, end}
 	for i, row := range grid {
 		for j, c := range row {
-			if c == '#' {
-				continue
-			}
-			count := 0
-			for _, dir := range []coordinate{UP, RIGHT, DOWN, LEFT} {
-				next := coordinate{i + dir.y, j + dir.x}
-				if isWithinBounds(grid, next) && grid[next.y][next.x] != '#' {
-					count++
-				}
-			}
-			if count > 2 {
+			if c != '#' && isWalkable(grid, i, j) {
 				walkable = append(walkable, coordinate{i, j})
 			}
 		}
 	}
+	graph := getAdjacencyGraph(grid, walkable)
+	return getMaxSteps(&graph, hashset.New(), start, end)
+}
+
+func getMaxSteps(graph *map[coordinate]map[coordinate]int, visited *hashset.Set, curr, end coordinate) int {
+	if curr == end {
+		return 0
+	}
+	result := math.MinInt
+	visited.Add(curr)
+	for next := range (*graph)[curr] {
+		result = max(result, getMaxSteps(graph, visited, next, end)+(*graph)[curr][next])
+	}
+	visited.Remove(curr)
+	return result
+}
+
+func getAdjacencyGraph(grid [][]rune, walkable []coordinate) map[coordinate]map[coordinate]int {
 	graph := make(map[coordinate]map[coordinate]int)
 	for _, pos := range walkable {
 		graph[pos] = make(map[coordinate]int)
@@ -86,20 +94,18 @@ func part1(lines []string) int {
 			}
 		}
 	}
-	return dfs(graph, hashset.New(), start, end)
+	return graph
 }
 
-func dfs(graph map[coordinate]map[coordinate]int, visited *hashset.Set, curr, end coordinate) int {
-	if curr == end {
-		return 0
+func isWalkable(grid [][]rune, i, j int) bool {
+	count := 0
+	for _, dir := range []coordinate{UP, RIGHT, DOWN, LEFT} {
+		next := coordinate{i + dir.y, j + dir.x}
+		if isWithinBounds(grid, next) && grid[next.y][next.x] != '#' {
+			count++
+		}
 	}
-	result := math.MinInt
-	visited.Add(curr)
-	for next := range graph[curr] {
-		result = max(result, dfs(graph, visited, next, end)+graph[curr][next])
-	}
-	visited.Remove(curr)
-	return result
+	return count > 2
 }
 
 func isWithinBounds(grid [][]rune, pos coordinate) bool {
