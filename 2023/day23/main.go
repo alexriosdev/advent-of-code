@@ -36,6 +36,7 @@ func main() {
 	lines, _ := utils.ReadLines("input.txt")
 	fmt.Println("2023 Day 23 Solution")
 	fmt.Printf("Part 1: %v\n", part1(lines))
+	fmt.Printf("Part 2: %v\n", part2(lines))
 }
 
 func part1(lines []string) int {
@@ -50,7 +51,23 @@ func part1(lines []string) int {
 			}
 		}
 	}
-	graph := getAdjacencyGraph(grid, walkable)
+	graph := getAdjacencyGraph(grid, walkable, false)
+	return getMaxSteps(&graph, hashset.New(), start, end)
+}
+
+func part2(lines []string) int {
+	grid := linesToGrid(lines)
+	start := coordinate{0, slices.Index(grid[0], '.')}
+	end := coordinate{len(grid) - 1, slices.Index(grid[len(grid)-1], '.')}
+	walkable := []coordinate{start, end}
+	for i, row := range grid {
+		for j, c := range row {
+			if c != '#' && isWalkable(grid, i, j) {
+				walkable = append(walkable, coordinate{i, j})
+			}
+		}
+	}
+	graph := getAdjacencyGraph(grid, walkable, true)
 	return getMaxSteps(&graph, hashset.New(), start, end)
 }
 
@@ -61,13 +78,15 @@ func getMaxSteps(graph *map[coordinate]map[coordinate]int, visited *hashset.Set,
 	result := math.MinInt
 	visited.Add(curr)
 	for next := range (*graph)[curr] {
-		result = max(result, getMaxSteps(graph, visited, next, end)+(*graph)[curr][next])
+		if !visited.Contains(next) {
+			result = max(result, getMaxSteps(graph, visited, next, end)+(*graph)[curr][next])
+		}
 	}
 	visited.Remove(curr)
 	return result
 }
 
-func getAdjacencyGraph(grid [][]rune, walkable []coordinate) map[coordinate]map[coordinate]int {
+func getAdjacencyGraph(grid [][]rune, walkable []coordinate, isNormalPath bool) map[coordinate]map[coordinate]int {
 	graph := make(map[coordinate]map[coordinate]int)
 	for _, pos := range walkable {
 		graph[pos] = make(map[coordinate]int)
@@ -85,6 +104,9 @@ func getAdjacencyGraph(grid [][]rune, walkable []coordinate) map[coordinate]map[
 				continue
 			}
 			c := grid[curr.pos.y][curr.pos.x]
+			if isNormalPath {
+				c = '.'
+			}
 			for _, dir := range SLOPE_MAP[c] {
 				next := coordinate{curr.pos.y + dir.y, curr.pos.x + dir.x}
 				if isWithinBounds(grid, next) && grid[next.y][next.x] != '#' && !visited[next] {
