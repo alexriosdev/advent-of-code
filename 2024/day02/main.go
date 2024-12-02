@@ -17,9 +17,8 @@ func main() {
 func part1(lines []string) int {
 	reports := [][]int{}
 	for _, line := range lines {
-		split := strings.Fields(line)
 		levels := []int{}
-		for _, str := range split {
+		for _, str := range strings.Fields(line) {
 			levels = append(levels, strToInt(str))
 		}
 		reports = append(reports, levels)
@@ -36,9 +35,8 @@ func part1(lines []string) int {
 func part2(lines []string) int {
 	reports := [][]int{}
 	for _, line := range lines {
-		split := strings.Fields(line)
 		levels := []int{}
-		for _, str := range split {
+		for _, str := range strings.Fields(line) {
 			levels = append(levels, strToInt(str))
 		}
 		reports = append(reports, levels)
@@ -62,11 +60,8 @@ func part2(lines []string) int {
 
 func isIncreasing(nums []int) bool {
 	for i := 0; i < len(nums)-1; i++ {
-		if nums[i+1] <= nums[i] {
-			return false
-		}
 		diff := getAbs(nums[i+1] - nums[i])
-		if diff < 1 || diff > 3 {
+		if nums[i+1] <= nums[i] || !isRange(1, 3, diff) {
 			return false
 		}
 	}
@@ -75,15 +70,16 @@ func isIncreasing(nums []int) bool {
 
 func isDecreasing(nums []int) bool {
 	for i := 0; i < len(nums)-1; i++ {
-		if nums[i+1] >= nums[i] {
-			return false
-		}
 		diff := getAbs(nums[i+1] - nums[i])
-		if diff < 1 || diff > 3 {
+		if nums[i+1] >= nums[i] || !isRange(1, 3, diff) {
 			return false
 		}
 	}
 	return true
+}
+
+func isRange(a, b, num int) bool {
+	return a <= num && num <= b
 }
 
 func removeIndex(nums []int, idx int) []int {
