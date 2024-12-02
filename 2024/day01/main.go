@@ -26,24 +26,18 @@ func part1(lines []string) int {
 	sort.Ints(right)
 	sum := 0
 	for i := range left {
-		sum += int(getAbs(right[i] - left[i]))
+		sum += getAbs(right[i] - left[i])
 	}
 	return sum
 }
 
 func part2(lines []string) int {
-	left, right := []int{}, []int{}
+	left := []int{}
+	freq := map[int]int{}
 	for _, line := range lines {
 		split := strings.Fields(line)
 		left = append(left, strToInt(split[0]))
-		right = append(right, strToInt(split[1]))
-	}
-	freq := map[int]int{}
-	for _, num := range left {
-		freq[num] = 0
-	}
-	for _, num := range right {
-		freq[num]++
+		freq[strToInt(split[1])]++
 	}
 	score := 0
 	for _, num := range left {
