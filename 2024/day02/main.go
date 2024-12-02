@@ -11,6 +11,7 @@ func main() {
 	lines, _ := utils.ReadLines("input.txt")
 	fmt.Println("2024 Day 02 Solution")
 	fmt.Printf("Part 1: %v\n", part1(lines))
+	fmt.Printf("Part 2: %v\n", part2(lines))
 }
 
 func part1(lines []string) int {
@@ -27,6 +28,33 @@ func part1(lines []string) int {
 	for _, levels := range reports {
 		if isIncreasing(levels) || isDecreasing(levels) {
 			count++
+		}
+	}
+	return count
+}
+
+func part2(lines []string) int {
+	reports := [][]int{}
+	for _, line := range lines {
+		split := strings.Fields(line)
+		levels := []int{}
+		for _, str := range split {
+			levels = append(levels, strToInt(str))
+		}
+		reports = append(reports, levels)
+	}
+	count := 0
+	for _, levels := range reports {
+		if isIncreasing(levels) || isDecreasing(levels) {
+			count++
+			continue
+		}
+		for i := range levels {
+			newLevels := removeIndex(levels, i)
+			if isIncreasing(newLevels) || isDecreasing(newLevels) {
+				count++
+				break
+			}
 		}
 	}
 	return count
@@ -56,6 +84,17 @@ func isDecreasing(nums []int) bool {
 		}
 	}
 	return true
+}
+
+func removeIndex(nums []int, idx int) []int {
+	result := []int{}
+	for i, num := range nums {
+		if i == idx {
+			continue
+		}
+		result = append(result, num)
+	}
+	return result
 }
 
 func strToInt(s string) int {
