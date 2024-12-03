@@ -38,7 +38,7 @@ func part1(input []byte) int {
 
 	result := math.MaxInt
 	for _, seed := range seeds {
-		result = getMin(result, convertSeed(seed, conversionMaps))
+		result = min(result, convertSeed(seed, conversionMaps))
 	}
 	return result
 }
@@ -70,7 +70,7 @@ func part2(input []byte) int {
 	for i := range seeds {
 		if i%2 == 0 {
 			for seed := seeds[i]; seed < seeds[i]+seeds[i+1]; seed++ {
-				result = getMin(result, convertSeed(seed, conversionMaps))
+				result = min(result, convertSeed(seed, conversionMaps))
 			}
 		}
 	}
@@ -91,11 +91,4 @@ func convertSeed(seed int, conversionMaps [][]rangeMap) int {
 		}
 	}
 	return seed
-}
-
-func getMin(a, b int) int {
-	if a < b {
-		return a
-	}
-	return b
 }

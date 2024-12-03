@@ -169,17 +169,3 @@ func getDifference(a, b *hashset.Set) *hashset.Set {
 	c.Remove(b.Values()...)
 	return c
 }
-
-func min(a, b int) int {
-	if a < b {
-		return a
-	}
-	return b
-}
-
-func max(a, b int) int {
-	if a > b {
-		return a
-	}
-	return b
-}

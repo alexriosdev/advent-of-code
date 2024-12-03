@@ -10,10 +10,10 @@ import (
 	"github.com/emirpasic/gods/stacks/arraystack"
 )
 
-var UP		= coordinate{-1, 0}
-var RIGHT	= coordinate{0, 1}
-var DOWN	= coordinate{1, 0}
-var LEFT	= coordinate{0, -1}
+var UP = coordinate{-1, 0}
+var RIGHT = coordinate{0, 1}
+var DOWN = coordinate{1, 0}
+var LEFT = coordinate{0, -1}
 
 var SLOPE_MAP = map[rune][]coordinate{
 	'<': {LEFT},
@@ -140,11 +140,4 @@ func linesToGrid(lines []string) [][]rune {
 		grid = append(grid, []rune(line))
 	}
 	return grid
-}
-
-func max(a, b int) int {
-	if a > b {
-		return a
-	}
-	return b
 }

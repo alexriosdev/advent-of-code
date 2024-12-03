@@ -50,13 +50,13 @@ func getDistanceSum(factor int, galaxies []coordinate, emptyRows, emptyCols []in
 			}
 			a, b := galaxies[i], galaxies[j]
 			dist := a.getDistance(&b)
-			rangeRows := makeRange(getMin(a.y, b.y), getMax(a.y, b.y))
+			rangeRows := makeRange(min(a.y, b.y), max(a.y, b.y))
 			for _, row := range emptyRows {
 				if slices.Contains(rangeRows, row) {
 					dist += factor - 1
 				}
 			}
-			rangeCols := makeRange(getMin(a.x, b.x), getMax(a.x, b.x))
+			rangeCols := makeRange(min(a.x, b.x), max(a.x, b.x))
 			for _, col := range emptyCols {
 				if slices.Contains(rangeCols, col) {
 					dist += factor - 1
@@ -129,20 +129,6 @@ func makeRange(min, max int) []int {
 		nums[i] = min + i
 	}
 	return nums
-}
-
-func getMin(a, b int) int {
-	if a < b {
-		return a
-	}
-	return b
-}
-
-func getMax(a, b int) int {
-	if a > b {
-		return a
-	}
-	return b
 }
 
 func getAbs(a int) int {

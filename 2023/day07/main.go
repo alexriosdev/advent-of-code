@@ -118,7 +118,7 @@ func part2(lines []string) int {
 		target := 0
 		for k, v := range freqA {
 			if k != 'J' {
-				target = getMax(target, v)
+				target = max(target, v)
 			}
 		}
 		if jCount, ok := freqA['J']; ok {
@@ -192,13 +192,6 @@ func comparePlays(playA, playB play, cardMap map[rune]int) bool {
 		}
 	}
 	return false
-}
-
-func getMax(a, b int) int {
-	if a > b {
-		return a
-	}
-	return b
 }
 
 func sliceEqual(a, b []int) bool {
