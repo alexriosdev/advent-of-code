@@ -1,10 +1,10 @@
 package main
 
 import (
+	"advent-of-code/utils"
 	"fmt"
 	"math"
 	"os"
-	"strconv"
 	"strings"
 )
 
@@ -19,7 +19,7 @@ func part1(input []byte) int {
 	split := strings.Split(strings.TrimSpace(string(input)), "\n\n")
 	seeds := []int{}
 	for _, s := range strings.Fields(strings.Split(split[0], ":")[1]) {
-		seeds = append(seeds, strToInt(s))
+		seeds = append(seeds, utils.StrToInt(s))
 	}
 
 	conversionMaps := [][]rangeMap{}
@@ -28,9 +28,9 @@ func part1(input []byte) int {
 		for _, s := range strings.Split(strings.Split(split[i], ":\n")[1], "\n") {
 			numbers := strings.Fields(s)
 			conversionMap = append(conversionMap, rangeMap{
-				dest:   strToInt(numbers[0]),
-				source: strToInt(numbers[1]),
-				len:    strToInt(numbers[2]),
+				dest:   utils.StrToInt(numbers[0]),
+				source: utils.StrToInt(numbers[1]),
+				len:    utils.StrToInt(numbers[2]),
 			})
 		}
 		conversionMaps = append(conversionMaps, conversionMap)
@@ -47,7 +47,7 @@ func part2(input []byte) int {
 	split := strings.Split(strings.TrimSpace(string(input)), "\n\n")
 	seeds := []int{}
 	for _, s := range strings.Fields(strings.Split(split[0], ":")[1]) {
-		seeds = append(seeds, strToInt(s))
+		seeds = append(seeds, utils.StrToInt(s))
 	}
 
 	conversionMaps := [][]rangeMap{}
@@ -56,9 +56,9 @@ func part2(input []byte) int {
 		for _, s := range strings.Split(strings.Split(split[i], ":\n")[1], "\n") {
 			numbers := strings.Fields(s)
 			conversionMap = append(conversionMap, rangeMap{
-				dest:   strToInt(numbers[0]),
-				source: strToInt(numbers[1]),
-				len:    strToInt(numbers[2]),
+				dest:   utils.StrToInt(numbers[0]),
+				source: utils.StrToInt(numbers[1]),
+				len:    utils.StrToInt(numbers[2]),
 			})
 		}
 		conversionMaps = append(conversionMaps, conversionMap)
@@ -98,9 +98,4 @@ func getMin(a, b int) int {
 		return a
 	}
 	return b
-}
-
-func strToInt(s string) int {
-	num, _ := strconv.Atoi(s)
-	return num
 }

@@ -3,7 +3,6 @@ package main
 import (
 	"advent-of-code/utils"
 	"fmt"
-	"strconv"
 	"strings"
 )
 
@@ -20,7 +19,7 @@ func part1(lines []string) int {
 	dists := strings.Fields(strings.Split(lines[1], ":")[1])
 	for i := range times {
 		count := 0
-		time, dist, availableDist := strToInt(times[i]), strToInt(dists[i]), strToInt(times[i])
+		time, dist, availableDist := utils.StrToInt(times[i]), utils.StrToInt(dists[i]), utils.StrToInt(times[i])
 		for currTime := 0; currTime < time; currTime++ {
 			if currTime*availableDist > dist {
 				count++
@@ -55,10 +54,5 @@ func buildNumber(line string) int {
 	for _, s := range strings.Fields(strings.Split(line, ":")[1]) {
 		sb.WriteString(s)
 	}
-	return strToInt(sb.String())
-}
-
-func strToInt(s string) int {
-	num, _ := strconv.Atoi(s)
-	return num
+	return utils.StrToInt(sb.String())
 }

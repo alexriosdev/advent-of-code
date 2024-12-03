@@ -1,9 +1,9 @@
 package main
 
 import (
+	"advent-of-code/utils"
 	"fmt"
 	"os"
-	"strconv"
 	"strings"
 	"unicode"
 )
@@ -26,10 +26,10 @@ func part1(input []byte) int {
 	for _, s := range strings.Split(lines[1], "\n") {
 		ratings := strings.Fields(ratingsReplacer.Replace(s))
 		parts = append(parts, map[rune]int{
-			'x': strToInt(ratings[0]),
-			'm': strToInt(ratings[1]),
-			'a': strToInt(ratings[2]),
-			's': strToInt(ratings[3]),
+			'x': utils.StrToInt(ratings[0]),
+			'm': utils.StrToInt(ratings[1]),
+			'a': utils.StrToInt(ratings[2]),
+			's': utils.StrToInt(ratings[3]),
 		})
 	}
 	workflows := map[string][]string{}
@@ -132,10 +132,5 @@ func runesToInt(runes []rune) int {
 	for i := 0; i < len(runes) && unicode.IsDigit(runes[i]); i++ {
 		num = (num * 10) + int(runes[i]-'0')
 	}
-	return num
-}
-
-func strToInt(s string) int {
-	num, _ := strconv.Atoi(s)
 	return num
 }

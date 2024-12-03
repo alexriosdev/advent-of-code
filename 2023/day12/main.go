@@ -3,7 +3,6 @@ package main
 import (
 	"advent-of-code/utils"
 	"fmt"
-	"strconv"
 	"strings"
 )
 
@@ -95,12 +94,7 @@ func unfoldStrings(s1, s2 string) (string, string) {
 func strToNumbers(s string) []int {
 	nums := []int{}
 	for _, num := range strings.Split(s, ",") {
-		nums = append(nums, strToInt(num))
+		nums = append(nums, utils.StrToInt(num))
 	}
 	return nums
-}
-
-func strToInt(s string) int {
-	num, _ := strconv.Atoi(s)
-	return num
 }

@@ -4,7 +4,6 @@ import (
 	"advent-of-code/utils"
 	"fmt"
 	"regexp"
-	"strconv"
 	"strings"
 )
 
@@ -21,7 +20,7 @@ func part1(lines []string) int {
 	result := 0
 	for _, match := range pattern.FindAllString(strings.Join(lines, ""), -1) {
 		split := strings.Fields(replacer.Replace(match))
-		result += strToInt(split[0]) * strToInt(split[1])
+		result += utils.StrToInt(split[0]) * utils.StrToInt(split[1])
 	}
 	return result
 }
@@ -40,12 +39,7 @@ func part2(lines []string) int {
 	result := 0
 	for _, match := range matches {
 		split := strings.Fields(replacer.Replace(match))
-		result += strToInt(split[0]) * strToInt(split[1])
+		result += utils.StrToInt(split[0]) * utils.StrToInt(split[1])
 	}
 	return result
-}
-
-func strToInt(s string) int {
-	num, _ := strconv.Atoi(s)
-	return num
 }

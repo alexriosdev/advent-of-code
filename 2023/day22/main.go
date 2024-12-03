@@ -4,7 +4,6 @@ import (
 	"advent-of-code/utils"
 	"fmt"
 	"sort"
-	"strconv"
 	"strings"
 
 	"github.com/emirpasic/gods/queues/linkedlistqueue"
@@ -28,12 +27,12 @@ func part1(lines []string) int {
 	for _, line := range lines {
 		split := strings.Fields(replacer.Replace(line))
 		brick := brick{
-			x1: strToInt(split[0]),
-			y1: strToInt(split[1]),
-			z1: strToInt(split[2]),
-			x2: strToInt(split[3]),
-			y2: strToInt(split[4]),
-			z2: strToInt(split[5]),
+			x1: utils.StrToInt(split[0]),
+			y1: utils.StrToInt(split[1]),
+			z1: utils.StrToInt(split[2]),
+			x2: utils.StrToInt(split[3]),
+			y2: utils.StrToInt(split[4]),
+			z2: utils.StrToInt(split[5]),
 		}
 		bricks = append(bricks, brick)
 	}
@@ -82,12 +81,12 @@ func part2(lines []string) int {
 	for _, line := range lines {
 		split := strings.Fields(replacer.Replace(line))
 		brick := brick{
-			x1: strToInt(split[0]),
-			y1: strToInt(split[1]),
-			z1: strToInt(split[2]),
-			x2: strToInt(split[3]),
-			y2: strToInt(split[4]),
-			z2: strToInt(split[5]),
+			x1: utils.StrToInt(split[0]),
+			y1: utils.StrToInt(split[1]),
+			z1: utils.StrToInt(split[2]),
+			x2: utils.StrToInt(split[3]),
+			y2: utils.StrToInt(split[4]),
+			z2: utils.StrToInt(split[5]),
 		}
 		bricks = append(bricks, brick)
 	}
@@ -169,11 +168,6 @@ func getDifference(a, b *hashset.Set) *hashset.Set {
 	c.Add(a.Values()...)
 	c.Remove(b.Values()...)
 	return c
-}
-
-func strToInt(s string) int {
-	num, _ := strconv.Atoi(s)
-	return num
 }
 
 func min(a, b int) int {

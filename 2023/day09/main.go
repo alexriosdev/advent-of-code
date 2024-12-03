@@ -3,7 +3,6 @@ package main
 import (
 	"advent-of-code/utils"
 	"fmt"
-	"strconv"
 	"strings"
 )
 
@@ -79,12 +78,7 @@ func isZeroes(nums []int) bool {
 func lineToNumbers(line string) []int {
 	nums := []int{}
 	for _, s := range strings.Fields(line) {
-		nums = append(nums, strToInt(s))
+		nums = append(nums, utils.StrToInt(s))
 	}
 	return nums
-}
-
-func strToInt(s string) int {
-	num, _ := strconv.Atoi(s)
-	return num
 }

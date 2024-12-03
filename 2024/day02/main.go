@@ -3,7 +3,6 @@ package main
 import (
 	"advent-of-code/utils"
 	"fmt"
-	"strconv"
 	"strings"
 )
 
@@ -19,7 +18,7 @@ func part1(lines []string) int {
 	for _, line := range lines {
 		levels := []int{}
 		for _, str := range strings.Fields(line) {
-			levels = append(levels, strToInt(str))
+			levels = append(levels, utils.StrToInt(str))
 		}
 		reports = append(reports, levels)
 	}
@@ -37,7 +36,7 @@ func part2(lines []string) int {
 	for _, line := range lines {
 		levels := []int{}
 		for _, str := range strings.Fields(line) {
-			levels = append(levels, strToInt(str))
+			levels = append(levels, utils.StrToInt(str))
 		}
 		reports = append(reports, levels)
 	}
@@ -91,11 +90,6 @@ func removeIndex(nums []int, idx int) []int {
 		result = append(result, num)
 	}
 	return result
-}
-
-func strToInt(s string) int {
-	num, _ := strconv.Atoi(s)
-	return num
 }
 
 func getAbs(a int) int {

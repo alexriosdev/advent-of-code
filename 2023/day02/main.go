@@ -3,7 +3,6 @@ package main
 import (
 	"advent-of-code/utils"
 	"fmt"
-	"strconv"
 	"strings"
 )
 
@@ -32,7 +31,7 @@ func part1(lines []string) int {
 			cubeSets := strings.Split(gameSet, ",")
 			for _, cubeSet := range cubeSets {
 				split := strings.Fields(cubeSet)
-				amount, _ := strconv.Atoi(split[0])
+				amount := utils.StrToInt(split[0])
 				color := split[1]
 				if amount > cubeMap[color] {
 					isValid = false
@@ -61,7 +60,7 @@ func part2(lines []string) int {
 			cubeSets := strings.Split(gameSet, ",")
 			for _, cubeSet := range cubeSets {
 				split := strings.Fields(cubeSet)
-				amount, _ := strconv.Atoi(split[0])
+				amount := utils.StrToInt(split[0])
 				color := split[1]
 				if amount > cubeMap[color] {
 					cubeMap[color] = amount

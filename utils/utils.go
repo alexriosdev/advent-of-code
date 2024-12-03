@@ -3,6 +3,7 @@ package utils
 import (
 	"bufio"
 	"os"
+	"strconv"
 )
 
 func ReadLines(path string) ([]string, error) {
@@ -21,4 +22,9 @@ func ReadLines(path string) ([]string, error) {
 		lines = append(lines, scanner.Text())
 	}
 	return lines, scanner.Err()
+}
+
+func StrToInt(s string) int {
+	num, _ := strconv.Atoi(s)
+	return num
 }

@@ -4,7 +4,6 @@ import (
 	"advent-of-code/utils"
 	"fmt"
 	"sort"
-	"strconv"
 	"strings"
 )
 
@@ -19,8 +18,8 @@ func part1(lines []string) int {
 	left, right := []int{}, []int{}
 	for _, line := range lines {
 		split := strings.Fields(line)
-		left = append(left, strToInt(split[0]))
-		right = append(right, strToInt(split[1]))
+		left = append(left, utils.StrToInt(split[0]))
+		right = append(right, utils.StrToInt(split[1]))
 	}
 	sort.Ints(left)
 	sort.Ints(right)
@@ -36,19 +35,14 @@ func part2(lines []string) int {
 	freq := map[int]int{}
 	for _, line := range lines {
 		split := strings.Fields(line)
-		left = append(left, strToInt(split[0]))
-		freq[strToInt(split[1])]++
+		left = append(left, utils.StrToInt(split[0]))
+		freq[utils.StrToInt(split[1])]++
 	}
 	score := 0
 	for _, num := range left {
 		score += num * freq[num]
 	}
 	return score
-}
-
-func strToInt(s string) int {
-	num, _ := strconv.Atoi(s)
-	return num
 }
 
 func getAbs(a int) int {

@@ -29,7 +29,7 @@ func part1(lines []string) int {
 	totalDist := 0
 	for _, line := range lines {
 		split := strings.Fields(line)
-		dir, dist := split[0], strToInt(split[1])
+		dir, dist := split[0], utils.StrToInt(split[1])
 		point := points[len(points)-1]
 		switch dir {
 		case "U":
@@ -90,11 +90,6 @@ func applyPicksTheorem(totalDist, area int) int {
 func hexToInt(s string) int {
 	num, _ := strconv.ParseInt(s, 16, 64)
 	return int(num)
-}
-
-func strToInt(s string) int {
-	num, _ := strconv.Atoi(s)
-	return num
 }
 
 func getAbs(a int) int {

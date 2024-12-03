@@ -4,7 +4,6 @@ import (
 	"advent-of-code/utils"
 	"fmt"
 	"sort"
-	"strconv"
 	"strings"
 )
 
@@ -39,7 +38,7 @@ func part1(lines []string) int {
 		split := strings.Split(line, " ")
 		plays = append(plays, play{
 			hand: split[0],
-			bid:  strToInt(split[1]),
+			bid:  utils.StrToInt(split[1]),
 		})
 	}
 
@@ -105,7 +104,7 @@ func part2(lines []string) int {
 		split := strings.Split(line, " ")
 		plays = append(plays, play{
 			hand: split[0],
-			bid:  strToInt(split[1]),
+			bid:  utils.StrToInt(split[1]),
 		})
 	}
 
@@ -193,11 +192,6 @@ func comparePlays(playA, playB play, cardMap map[rune]int) bool {
 		}
 	}
 	return false
-}
-
-func strToInt(s string) int {
-	num, _ := strconv.Atoi(s)
-	return num
 }
 
 func getMax(a, b int) int {
