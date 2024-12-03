@@ -25,7 +25,7 @@ func part1(lines []string) int {
 	sort.Ints(right)
 	sum := 0
 	for i := range left {
-		sum += getAbs(right[i] - left[i])
+		sum += utils.Abs(right[i] - left[i])
 	}
 	return sum
 }
@@ -43,11 +43,4 @@ func part2(lines []string) int {
 		score += num * freq[num]
 	}
 	return score
-}
-
-func getAbs(a int) int {
-	if a < 0 {
-		return -a
-	}
-	return a
 }

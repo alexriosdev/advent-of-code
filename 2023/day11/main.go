@@ -12,7 +12,7 @@ type coordinate struct {
 }
 
 func (a *coordinate) getDistance(b *coordinate) int {
-	return getAbs(a.x-b.x) + getAbs(a.y-b.y)
+	return utils.Abs(a.x-b.x) + utils.Abs(a.y-b.y)
 }
 
 func main() {
@@ -129,11 +129,4 @@ func makeRange(min, max int) []int {
 		nums[i] = min + i
 	}
 	return nums
-}
-
-func getAbs(a int) int {
-	if a < 0 {
-		return -a
-	}
-	return a
 }

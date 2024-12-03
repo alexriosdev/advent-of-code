@@ -28,3 +28,10 @@ func StrToInt(s string) int {
 	num, _ := strconv.Atoi(s)
 	return num
 }
+
+func Abs(a int) int {
+	if a < 0 {
+		return -a
+	}
+	return a
+}

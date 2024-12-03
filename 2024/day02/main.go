@@ -59,7 +59,7 @@ func part2(lines []string) int {
 
 func isIncreasing(nums []int) bool {
 	for i := 0; i < len(nums)-1; i++ {
-		diff := getAbs(nums[i+1] - nums[i])
+		diff := utils.Abs(nums[i+1] - nums[i])
 		if nums[i+1] <= nums[i] || !isRange(1, 3, diff) {
 			return false
 		}
@@ -69,7 +69,7 @@ func isIncreasing(nums []int) bool {
 
 func isDecreasing(nums []int) bool {
 	for i := 0; i < len(nums)-1; i++ {
-		diff := getAbs(nums[i+1] - nums[i])
+		diff := utils.Abs(nums[i+1] - nums[i])
 		if nums[i+1] >= nums[i] || !isRange(1, 3, diff) {
 			return false
 		}
@@ -90,11 +90,4 @@ func removeIndex(nums []int, idx int) []int {
 		result = append(result, num)
 	}
 	return result
-}
-
-func getAbs(a int) int {
-	if a < 0 {
-		return -a
-	}
-	return a
 }

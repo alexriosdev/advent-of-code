@@ -80,7 +80,7 @@ func applyShoelaceFormula(points []coordinate) int {
 		sum += (points[i].x * points[j].y) - (points[j].x * points[i].y)
 		j = i
 	}
-	return getAbs(sum) / 2
+	return utils.Abs(sum) / 2
 }
 
 func applyPicksTheorem(totalDist, area int) int {
@@ -90,11 +90,4 @@ func applyPicksTheorem(totalDist, area int) int {
 func hexToInt(s string) int {
 	num, _ := strconv.ParseInt(s, 16, 64)
 	return int(num)
-}
-
-func getAbs(a int) int {
-	if a < 0 {
-		return -a
-	}
-	return a
 }
