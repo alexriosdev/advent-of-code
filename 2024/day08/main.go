@@ -9,13 +9,29 @@ func main() {
 	lines, _ := utils.ReadLines("input.txt")
 	fmt.Println("2024 Day 08 Solution")
 	fmt.Printf("Part 1: %v\n", part1(lines))
+	fmt.Printf("Part 2: %v\n", part2(lines))
 }
 
 func part1(lines []string) int {
 	grid := convertToGrid(lines)
 	frequenciesMap := getFrequenciesMap(grid)
-	antinodes := getAntinodes(grid, frequenciesMap)
+	antinodes := getAntinodes(grid, frequenciesMap, false)
 	return len(antinodes)
+}
+
+func part2(lines []string) int {
+	grid := convertToGrid(lines)
+	frequenciesMap := getFrequenciesMap(grid)
+	antinodes := getAntinodes(grid, frequenciesMap, true)
+	newAntinodesCount := 0
+	for i, row := range grid {
+		for j, c := range row {
+			if !antinodes[coordinate{i, j}] && c != '.' {
+				newAntinodesCount++
+			}
+		}
+	}
+	return len(antinodes) + newAntinodesCount
 }
 
 type coordinate struct {
@@ -42,7 +58,7 @@ func getFrequenciesMap(grid [][]rune) map[rune][]coordinate {
 	return frequenciesMap
 }
 
-func getAntinodes(grid [][]rune, frequenciesMap map[rune][]coordinate) map[coordinate]bool {
+func getAntinodes(grid [][]rune, frequenciesMap map[rune][]coordinate, useRecursion bool) map[coordinate]bool {
 	antinodes := map[coordinate]bool{}
 	for _, frequencies := range frequenciesMap {
 		for _, a := range frequencies {
@@ -50,15 +66,23 @@ func getAntinodes(grid [][]rune, frequenciesMap map[rune][]coordinate) map[coord
 				if a == b {
 					continue
 				}
-				dx := 2*a.x - b.x
-				dy := 2*a.y - b.y
-				if isRange(grid, dx, dy) {
-					antinodes[coordinate{dx, dy}] = true
-				}
+				getAntinodesRecursive(grid, a, b, &antinodes, useRecursion)
 			}
 		}
 	}
 	return antinodes
+}
+
+func getAntinodesRecursive(grid [][]rune, a, b coordinate, antinodes *map[coordinate]bool, useRecursion bool) {
+	dx := 2*a.x - b.x
+	dy := 2*a.y - b.y
+	if isRange(grid, dx, dy) {
+		freq := coordinate{dx, dy}
+		(*antinodes)[freq] = true
+		if useRecursion {
+			getAntinodesRecursive(grid, freq, a, antinodes, useRecursion)
+		}
+	}
 }
 
 func isRange(grid [][]rune, i, j int) bool {
