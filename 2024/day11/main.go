@@ -4,7 +4,6 @@ import (
 	"advent-of-code/utils"
 	"fmt"
 	"math"
-	"slices"
 	"strconv"
 	"strings"
 )
@@ -13,6 +12,7 @@ func main() {
 	lines, _ := utils.ReadLines("input.txt")
 	fmt.Println("2024 Day 11 Solution")
 	fmt.Printf("Part 1: %v\n", part1(lines, 25))
+	fmt.Printf("Part 2: %v\n", part1(lines, 75))
 }
 
 func part1(lines []string, n int) int {
@@ -20,34 +20,39 @@ func part1(lines []string, n int) int {
 	for i := 0; i < n; i++ {
 		rearrangeStones(&stones)
 	}
-	return len(stones)
+	result := 0
+	for _, count := range stones {
+		result += count
+	}
+	return result
 }
 
-func getStones(lines []string) []int {
-	stones := []int{}
+func getStones(lines []string) map[int]int {
+	stones := map[int]int{}
 	for _, line := range lines {
 		for _, s := range strings.Fields(line) {
-			stones = append(stones, utils.StrToInt(s))
+			stones[utils.StrToInt(s)] = 1
 		}
 	}
 	return stones
 }
 
-func rearrangeStones(stones *[]int) {
-	for i := 0; i < len(*stones); i++ {
+func rearrangeStones(stones *map[int]int) {
+	newStones := map[int]int{}
+	for stone, count := range *stones {
 		switch {
-		case (*stones)[i] == 0:
-			(*stones)[i] = 1
-		case getDigits((*stones)[i])%2 == 0:
-			s := strconv.Itoa((*stones)[i])
+		case stone == 0:
+			newStones[1] += count
+		case getDigits(stone)%2 == 0:
+			s := strconv.Itoa(stone)
 			a, b := utils.StrToInt(s[:len(s)/2]), utils.StrToInt(s[len(s)/2:])
-			(*stones)[i] = a
-			*stones = slices.Insert(*stones, i+1, b)
-			i++
+			newStones[a] += count
+			newStones[b] += count
 		default:
-			(*stones)[i] *= 2024
+			newStones[stone*2024] += count
 		}
 	}
+	*stones = newStones
 }
 
 func getDigits(num int) int {
