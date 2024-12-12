@@ -35,6 +35,26 @@ func part1(lines []string) int {
 	return result
 }
 
+func part2(lines []string) int {
+	grid := convertToGrid(lines)
+	visited := hashset.New()
+	regions := []region{}
+	for i, row := range grid {
+		for j, c := range row {
+			if !visited.Contains(coordinate{i, j}) {
+				region := bfs(grid, coordinate{i, j}, c)
+				regions = append(regions, region)
+				visited.Add(region.plots.Values()...)
+			}
+		}
+	}
+	result := 0
+	for _, region := range regions {
+		result += region.area * getSides(region.plots)
+	}
+	return result
+}
+
 type coordinate struct {
 	x, y int
 }
@@ -81,6 +101,40 @@ func getNeighbors(grid [][]rune, curr coordinate, c rune) []coordinate {
 		}
 	}
 	return neighbors
+}
+
+func getSides(plots sets.Set) int {
+	dirs := [][]int{{-1, 0}, {0, 1}, {1, 0}, {0, -1}}
+	count := 0
+	for _, dir := range dirs {
+		sides := hashset.New()
+		for _, val := range plots.Values() {
+			plot := val.(coordinate)
+			next := coordinate{
+				plot.x + dir[0],
+				plot.y + dir[1],
+			}
+			if !plots.Contains(next) {
+				sides.Add(next)
+			}
+		}
+		for _, val := range sides.Values() {
+			side := val.(coordinate)
+			next := coordinate{
+				side.x + dir[1],
+				side.y + dir[0],
+			}
+			for sides.Contains(next) {
+				sides.Remove(next)
+				next = coordinate{
+					next.x + dir[1],
+					next.y + dir[0],
+				}
+			}
+		}
+		count += sides.Size()
+	}
+	return count
 }
 
 func convertToGrid(lines []string) [][]rune {
