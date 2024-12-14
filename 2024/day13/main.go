@@ -8,28 +8,23 @@ import (
 	"strings"
 )
 
+var PRIZE_DELTA = 10000000000000
+
 func main() {
 	input, _ := os.ReadFile("input.txt")
 	fmt.Println("2024 Day 13 Solution")
 	fmt.Printf("Part 1: %v\n", part1(input))
+	fmt.Printf("Part 2: %v\n", part2(input))
 }
 
 func part1(input []byte) int {
 	games := getGames(input)
-	result := 0
-	for _, game := range games {
-		den := (game.buttonA.x * game.buttonB.y) - (game.buttonA.y * game.buttonB.x)
-		numA := (game.buttonB.y * game.prize.x) - (game.buttonB.x * game.prize.y)
-		numB := (game.buttonA.x * game.prize.y) - (game.buttonA.y * game.prize.x)
-		if den == 0 || numA%den != 0 || numB%den != 0 {
-			continue
-		}
-		a, b := numA/den, numB/den
-		if max(a, b) <= 100 {
-			result += 3*a + b
-		}
-	}
-	return result
+	return getTokens(games, 0)
+}
+
+func part2(input []byte) int {
+	games := getGames(input)
+	return getTokens(games, PRIZE_DELTA)
 }
 
 type coordinate struct {
@@ -59,4 +54,23 @@ func getGames(input []byte) []game {
 		games = append(games, game)
 	}
 	return games
+}
+
+func getTokens(games []game, prizeDelta int) int {
+	result := 0
+	for _, game := range games {
+		game.prize.x += prizeDelta
+		game.prize.y += prizeDelta
+		den := (game.buttonA.x * game.buttonB.y) - (game.buttonA.y * game.buttonB.x)
+		numA := (game.buttonB.y * game.prize.x) - (game.buttonB.x * game.prize.y)
+		numB := (game.buttonA.x * game.prize.y) - (game.buttonA.y * game.prize.x)
+		if den == 0 || numA%den != 0 || numB%den != 0 {
+			continue
+		}
+		a, b := numA/den, numB/den
+		if prizeDelta != 0 || max(a, b) <= 100 {
+			result += 3*a + b
+		}
+	}
+	return result
 }
