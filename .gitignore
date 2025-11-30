@@ -22,3 +22,9 @@ go.work
 
 # Input files
 *.txt
+
+# MacOS system files
+.DS_Store
+
+# Jetbrains files
+.idea/*
