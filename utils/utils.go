@@ -24,6 +24,14 @@ func ReadLines(path string) ([]string, error) {
 	return lines, scanner.Err()
 }
 
+func ReadLine(path string) (string, error) {
+	lines, err := ReadLines(path)
+	if err != nil {
+		return "", err
+	}
+	return lines[0], nil
+}
+
 func StrToInt(s string) int {
 	num, _ := strconv.Atoi(s)
 	return num
