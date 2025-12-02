@@ -17,7 +17,7 @@ func TestPart1(t *testing.T) {
 		{lines1, 140},
 		{lines2, 772},
 		{lines3, 1930},
-		{lines4, 0},
+		{lines4, 1473620},
 	}
 	for _, test := range tests {
 		result := part1(test.input)
