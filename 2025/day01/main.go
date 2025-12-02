@@ -6,8 +6,8 @@ import (
 )
 
 func main() {
-	lines1, _ := utils.ReadLines("2025/day01/input1.txt")
-	lines2, _ := utils.ReadLines("2025/day01/input1.txt")
+	lines1, _ := utils.ReadLines("2025/day01/input.txt")
+	lines2, _ := utils.ReadLines("2025/day01/input.txt")
 	fmt.Println("2025 Day 01 Solution")
 	fmt.Printf("Part 1: %v\n", part1(lines1))
 	fmt.Printf("Part 2: %v\n", part2(lines2))

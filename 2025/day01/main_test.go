@@ -6,8 +6,8 @@ import (
 )
 
 func TestPart1(t *testing.T) {
-	lines1, _ := utils.ReadLines("input_test1.txt")
-	lines2, _ := utils.ReadLines("input1.txt")
+	lines1, _ := utils.ReadLines("input_test.txt")
+	lines2, _ := utils.ReadLines("input.txt")
 	tests := []struct {
 		input    []string
 		expected int
@@ -24,8 +24,8 @@ func TestPart1(t *testing.T) {
 }
 
 func TestPart2(t *testing.T) {
-	lines1, _ := utils.ReadLines("input_test1.txt")
-	lines2, _ := utils.ReadLines("input1.txt")
+	lines1, _ := utils.ReadLines("input_test.txt")
+	lines2, _ := utils.ReadLines("input.txt")
 	tests := []struct {
 		input    []string
 		expected int
