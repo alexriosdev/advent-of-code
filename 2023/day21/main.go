@@ -22,7 +22,7 @@ type state struct {
 }
 
 func main() {
-	lines, _ := utils.ReadLines("input.txt")
+	lines, _ := utils.ReadLines("2023/day21/input.txt")
 	fmt.Println("2023 Day 21 Solution")
 	fmt.Printf("Part 1: %v\n", part1(lines, 64))
 }

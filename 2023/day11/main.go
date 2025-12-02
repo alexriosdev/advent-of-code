@@ -16,7 +16,7 @@ func (a *coordinate) getDistance(b *coordinate) int {
 }
 
 func main() {
-	lines, _ := utils.ReadLines("input.txt")
+	lines, _ := utils.ReadLines("2023/day11/input.txt")
 	fmt.Println("2023 Day 11 Solution")
 	fmt.Printf("Part 1: %v\n", part1(lines))
 	fmt.Printf("Part 2: %v\n", part2(lines, 1000000))

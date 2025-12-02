@@ -9,10 +9,10 @@ import (
 	"github.com/emirpasic/gods/sets/hashset"
 )
 
-var UP 		= direction{-1, 0}
-var RIGHT 	= direction{0, 1}
-var DOWN 	= direction{1, 0}
-var LEFT 	= direction{0, -1}
+var UP = direction{-1, 0}
+var RIGHT = direction{0, 1}
+var DOWN = direction{1, 0}
+var LEFT = direction{0, -1}
 
 type coordinate struct {
 	y, x int
@@ -26,7 +26,7 @@ type beam struct {
 }
 
 func main() {
-	lines, _ := utils.ReadLines("input.txt")
+	lines, _ := utils.ReadLines("2023/day16/input.txt")
 	fmt.Println("2023 Day 16 Solution")
 	fmt.Printf("Part 1: %v\n", part1(lines))
 	fmt.Printf("Part 2: %v\n", part2(lines))

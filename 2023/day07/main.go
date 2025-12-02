@@ -17,16 +17,16 @@ type handType struct {
 	shape []int
 }
 
-var fiveOfAKind  = handType{value: 7, shape: []int{5}}
-var fourOfAKind  = handType{value: 6, shape: []int{1, 4}}
-var fullHouse    = handType{value: 5, shape: []int{2, 3}}
+var fiveOfAKind = handType{value: 7, shape: []int{5}}
+var fourOfAKind = handType{value: 6, shape: []int{1, 4}}
+var fullHouse = handType{value: 5, shape: []int{2, 3}}
 var threeOfAKind = handType{value: 4, shape: []int{1, 1, 3}}
-var twoPair      = handType{value: 3, shape: []int{1, 2, 2}}
-var onePair      = handType{value: 2, shape: []int{1, 1, 1, 2}}
-var highCard     = handType{value: 1, shape: []int{1, 1, 1, 1, 1}}
+var twoPair = handType{value: 3, shape: []int{1, 2, 2}}
+var onePair = handType{value: 2, shape: []int{1, 1, 1, 2}}
+var highCard = handType{value: 1, shape: []int{1, 1, 1, 1, 1}}
 
 func main() {
-	lines, _ := utils.ReadLines("input.txt")
+	lines, _ := utils.ReadLines("2023/day07/input.txt")
 	fmt.Println("2023 Day 07 Solution")
 	fmt.Printf("Part 1: %v\n", part1(lines))
 	fmt.Printf("Part 2: %v\n", part2(lines))
