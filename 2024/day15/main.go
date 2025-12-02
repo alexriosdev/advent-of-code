@@ -6,13 +6,13 @@ import (
 	"strings"
 )
 
-var UP 		= coordinate{-1, 0}
-var RIGHT 	= coordinate{0, 1}
-var DOWN 	= coordinate{1, 0}
-var LEFT 	= coordinate{0, -1}
+var UP = coordinate{-1, 0}
+var RIGHT = coordinate{0, 1}
+var DOWN = coordinate{1, 0}
+var LEFT = coordinate{0, -1}
 
 func main() {
-	input, _ := os.ReadFile("input.txt")
+	input, _ := os.ReadFile("2024/day15/input.txt")
 	fmt.Println("2024 Day 15 Solution")
 	fmt.Printf("Part 1: %v\n", part1(input))
 }

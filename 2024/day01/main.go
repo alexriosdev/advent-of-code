@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	lines, _ := utils.ReadLines("input.txt")
+	lines, _ := utils.ReadLines("2024/day01/input.txt")
 	fmt.Println("2024 Day 01 Solution")
 	fmt.Printf("Part 1: %v\n", part1(lines))
 	fmt.Printf("Part 2: %v\n", part2(lines))

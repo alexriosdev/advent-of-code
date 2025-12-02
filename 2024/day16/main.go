@@ -9,13 +9,13 @@ import (
 	pqutil "github.com/emirpasic/gods/utils"
 )
 
-var UP 		= coordinate{-1, 0}
-var RIGHT 	= coordinate{0, 1}
-var DOWN 	= coordinate{1, 0}
-var LEFT 	= coordinate{0, -1}
+var UP = coordinate{-1, 0}
+var RIGHT = coordinate{0, 1}
+var DOWN = coordinate{1, 0}
+var LEFT = coordinate{0, -1}
 
 func main() {
-	lines, _ := utils.ReadLines("input.txt")
+	lines, _ := utils.ReadLines("2024/day16/input.txt")
 	fmt.Println("2024 Day 16 Solution")
 	fmt.Printf("Part 1: %v\n", part1(lines))
 }

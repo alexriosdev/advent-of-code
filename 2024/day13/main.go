@@ -11,7 +11,7 @@ import (
 var PRIZE_DELTA = 10000000000000
 
 func main() {
-	input, _ := os.ReadFile("input.txt")
+	input, _ := os.ReadFile("2024/day13/input.txt")
 	fmt.Println("2024 Day 13 Solution")
 	fmt.Printf("Part 1: %v\n", part1(input))
 	fmt.Printf("Part 2: %v\n", part2(input))
