@@ -30,8 +30,8 @@ func TestPart2(t *testing.T) {
 		input    []byte
 		expected int
 	}{
-		{input1, 0},
-		{input2, 0},
+		{input1, 14},
+		{input2, 357674099117260},
 	}
 	for _, test := range tests {
 		result := part2(test.input)
