@@ -37,7 +37,34 @@ func part1(lines []string) int {
 }
 
 func part2(lines []string) int {
-	return len(lines)
+	grid := convertToGrid(lines)
+	timelines := make([]int, len(grid[0]))
+	for r, row := range grid {
+		for c, curr := range row {
+			prev := '.'
+			if r > 0 {
+				prev = grid[r-1][c]
+			}
+			switch {
+			case curr == 'S':
+				grid[r+1][c] = '|'
+				timelines[c] = 1
+			case curr == '.' && prev == '|':
+				grid[r][c] = '|'
+			case curr == '^' && prev == '|':
+				grid[r][c-1] = '|'
+				grid[r][c+1] = '|'
+				timelines[c-1] += timelines[c]
+				timelines[c+1] += timelines[c]
+				timelines[c] = 0
+			}
+		}
+	}
+	sum := 0
+	for _, timeline := range timelines {
+		sum += timeline
+	}
+	return sum
 }
 
 func displayGrid(grid *[][]rune) {
