@@ -42,7 +42,26 @@ func part1(lines []string, n int) int {
 }
 
 func part2(lines []string) int {
-	return len(lines)
+	boxes := Boxes{}
+	for _, line := range lines {
+		split := strings.Split(line, ",")
+		x, y, z := utils.StrToInt(split[0]), utils.StrToInt(split[1]), utils.StrToInt(split[2])
+		boxes.Add(Box{x, y, z})
+	}
+	pairs := boxes.Pairs()
+	dsu := NewDSU(len(pairs))
+	connections := 0
+	for _, pair := range pairs {
+		i, j := pair.Key[0], pair.Key[1]
+		if dsu.Find(i) != dsu.Find(j) {
+			connections++
+		}
+		if connections == len(boxes)-1 {
+			return boxes[i].X * boxes[j].X
+		}
+		dsu.Union(i, j)
+	}
+	return -1
 }
 
 type Pair struct {
