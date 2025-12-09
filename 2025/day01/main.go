@@ -14,8 +14,7 @@ func main() {
 }
 
 func part1(lines []string) int {
-	dial := &Dial{}
-	dial.Init(99)
+	dial := NewDial(99)
 	dial.Rotate('R', 50)
 	for _, line := range lines {
 		dir, dist := rune(line[0]), utils.StrToInt(line[1:])
@@ -26,8 +25,7 @@ func part1(lines []string) int {
 }
 
 func part2(lines []string) int {
-	dial := &Dial{}
-	dial.Init(99)
+	dial := NewDial(99)
 	dial.Rotate('R', 50)
 	for _, line := range lines {
 		dir, dist := rune(line[0]), utils.StrToInt(line[1:])
@@ -46,8 +44,9 @@ type Dial struct {
 	Len, Zeroes int
 }
 
-func (d *Dial) Init(size int) *Dial {
-	for i := size; i >= 0; i-- {
+func NewDial(n int) *Dial {
+	d := &Dial{}
+	for i := n; i >= 0; i-- {
 		d.Insert(i)
 	}
 	return d
