@@ -41,7 +41,7 @@ func part2(input []byte) int {
 	for _, s := range strings.Split(sections[0], "\n") {
 		split := strings.Split(s, "-")
 		start, end := utils.StrToInt(split[0]), utils.StrToInt(split[1])
-		intervals.Add(start, end)
+		intervals.Add(Interval{start, end})
 	}
 	intervals.SortAsc()
 	merged := intervals.GetMerged()
@@ -58,8 +58,8 @@ type Interval struct {
 
 type Intervals []Interval
 
-func (intervals *Intervals) Add(start, end int) {
-	*intervals = append(*intervals, Interval{start, end})
+func (intervals *Intervals) Add(interval Interval) {
+	*intervals = append(*intervals, interval)
 }
 
 func (intervals *Intervals) SortAsc() {
