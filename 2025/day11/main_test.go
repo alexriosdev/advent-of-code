@@ -6,7 +6,7 @@ import (
 )
 
 func TestPart1(t *testing.T) {
-	lines1, _ := utils.ReadLines("input_test.txt")
+	lines1, _ := utils.ReadLines("input_test1.txt")
 	lines2, _ := utils.ReadLines("input.txt")
 	tests := []struct {
 		input    []string
@@ -24,14 +24,14 @@ func TestPart1(t *testing.T) {
 }
 
 func TestPart2(t *testing.T) {
-	lines1, _ := utils.ReadLines("input_test.txt")
+	lines1, _ := utils.ReadLines("input_test2.txt")
 	lines2, _ := utils.ReadLines("input.txt")
 	tests := []struct {
 		input    []string
 		expected int
 	}{
-		{lines1, 0},
-		{lines2, 0},
+		{lines1, 2},
+		{lines2, 377452269415704},
 	}
 	for _, test := range tests {
 		result := part2(test.input)

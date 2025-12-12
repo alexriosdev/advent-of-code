@@ -39,5 +39,27 @@ func part1(lines []string) int {
 }
 
 func part2(lines []string) int {
-	return len(lines)
+	dict := map[string][]string{}
+	for _, line := range lines {
+		fields := strings.Fields(strings.NewReplacer(":", "").Replace(line))
+		key := fields[0]
+		dict[key] = fields[1:]
+	}
+	return (dfs("svr", "dac", dict, map[string]int{}) * dfs("dac", "fft", dict, map[string]int{}) * dfs("fft", "out", dict, map[string]int{})) +
+		(dfs("svr", "fft", dict, map[string]int{}) * dfs("fft", "dac", dict, map[string]int{}) * dfs("dac", "out", dict, map[string]int{}))
+}
+
+func dfs(curr, target string, dict map[string][]string, visited map[string]int) int {
+	if curr == target {
+		return 1
+	}
+	if val, ok := visited[curr]; ok {
+		return val
+	}
+	count := 0
+	for _, next := range dict[curr] {
+		count += dfs(next, target, dict, visited)
+	}
+	visited[curr] = count
+	return count
 }
